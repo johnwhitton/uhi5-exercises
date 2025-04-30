@@ -4,9 +4,9 @@ pragma solidity 0.8.29;
 import {BaseHook} from "v4-periphery/src/utils/BaseHook.sol";
 import {ERC20} from "solmate/src/tokens/ERC20.sol";
 
-import {Currency, CurrencyLibrary} from "v4-core/types/Currency.sol";
+import {Currency} from "v4-core/types/Currency.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
-import {BalanceDelta, BalanceDeltaLibrary} from "v4-core/types/BalanceDelta.sol";
+import {BalanceDelta} from "v4-core/types/BalanceDelta.sol";
 import {SwapParams, ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
 
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
@@ -17,8 +17,8 @@ contract PointsHook is BaseHook, ERC20 {
     // Use CurrencyLibrary and BalanceDeltaLibrary
     // to add some helper functions over the Currency and BalanceDelta
     // data types
-    using CurrencyLibrary for Currency;
-    using BalanceDeltaLibrary for BalanceDelta;
+    // using CurrencyLibrary for Currency;
+    // using BalanceDeltaLibrary for BalanceDelta;
 
     // Initialize BaseHook and ERC20
     constructor(IPoolManager _manager, string memory _name, string memory _symbol)
