@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.29;
+pragma solidity 0.8.29;
 
 import {BaseHook} from "v4-periphery/src/utils/BaseHook.sol";
 import {ERC20} from "solmate/src/tokens/ERC20.sol";
 
-import {CurrencyLibrary, Currency} from "v4-core/types/Currency.sol";
+import {Currency, CurrencyLibrary} from "v4-core/types/Currency.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
-import {BalanceDeltaLibrary, BalanceDelta} from "v4-core/types/BalanceDelta.sol";
+import {BalanceDelta, BalanceDeltaLibrary} from "v4-core/types/BalanceDelta.sol";
+import {SwapParams, ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
 
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
 
@@ -47,27 +48,26 @@ contract PointsHook is BaseHook, ERC20 {
     }
 
     // Stub implementation of `afterSwap`
-    function afterSwap(
+    function _afterSwap(
         address,
         PoolKey calldata key,
-        // IPoolManager.SwapParams calldata swapParams,
-        SwapParams calldata params,
+        SwapParams calldata swapParams,
         BalanceDelta delta,
         bytes calldata hookData
-    ) external override onlyPoolManager returns (bytes4, int128) {
+    ) internal override returns (bytes4, int128) {
         // We'll add more code here shortly
         return (this.afterSwap.selector, 0);
     }
 
     // Stub implementation for `afterAddLiquidity`
-    function afterAddLiquidity(
+    function _afterAddLiquidity(
         address,
         PoolKey calldata key,
-        IPoolManager.ModifyLiquidityParams calldata,
+        ModifyLiquidityParams calldata,
         BalanceDelta delta,
         BalanceDelta,
         bytes calldata hookData
-    ) external override onlyPoolManager returns (bytes4, BalanceDelta) {
+    ) internal override returns (bytes4, BalanceDelta) {
         // We'll add more code here shortly
         return (this.afterAddLiquidity.selector, delta);
     }
