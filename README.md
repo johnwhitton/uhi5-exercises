@@ -3,7 +3,8 @@
 The following is an exercise from atrium academy for building your first hook.
 Please read [EXERCISE.md](./EXERCISE.md) for an overview of the exercise.
 
-1. [FirstHook.md](./exercises/1FirstHook.md)
+1. [FirstHook.md](./exercises/FirstHook.md)
+2. [DynamicFees.md](./exercises/DynamicFees.md)
 
 ## Usage
 
