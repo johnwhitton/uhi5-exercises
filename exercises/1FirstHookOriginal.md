@@ -1,4 +1,4 @@
-# Building your first hook
+# Building your first hook (original version)
 
 ## Mechanism Design
 
@@ -615,7 +615,7 @@ forge test
 
 and it should give you something like this:
 
-![First Hook Test](./first-hook-forge-test.png "First Hook Test")
+![First Hook Original Test](./first-hook-forge-original-test.png "First Hook Original Test")
 
 If you see this screen - great! If they're failing, something is wrong - try and see what that is, or come ask for help.
 
