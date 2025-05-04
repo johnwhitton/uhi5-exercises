@@ -64,7 +64,7 @@ The way they choose this is based on the `amountSpecified` parameter of the `Swa
 1. Specify a negative value for `amountSpecified`. A negative value implies "money going out from the user's wallet". This is taken to mean an "exact input for output" swap. They are specifying exactly how much money will leave their wallet, in exchange for some calculated amount of output tokens.
 2. Specify a positive value for `amountSpecified`. A positive value implies "money coming in to the user's wallet". This is taken to mean an "exact output for input" swap. They are specifying exactly how much money they want coming in to their wallet, in exchange for some calculated amount of input tokens.
 
-So - since an `ETH → TOKEN` swap can happen either way (exact input for output, or exact output for input) - we will not always know how much `ETH` they actually spent. We will know it for sure if they specify `ETH` as an exact input amount, but not if they specify `TOKEN` as an exact output amount - if we try to derive it from just `SwapParams`.
+So - since a `ETH → TOKEN` swap can happen either way (exact input for output, or exact output for input) - we will not always know how much `ETH` they actually spent. We will know it for sure if they specify `ETH` as an exact input amount, but not if they specify `TOKEN` as an exact output amount - if we try to derive it from just `SwapParams`.
 
 ### Choosing the hook functions
 
@@ -74,7 +74,7 @@ So - for minting `POINTS` in case of swaps, we know we will need to use `afterSw
 
 The user might originally send some amount of ETH but when the contract calculates the proper ratio of ETH:TOKEN required to add liquidity in their chosen price range, they may have sent additional `ETH` than necessary, which will be returned to them.
 
-Hopefully that makes sense now. I know it's a bit of a wall of text - but feel free to ask clarifying questions if something seems unclear and we'll also use that feedback to improve the lesson overall for everyone.
+Hopefully that makes sense now. I know it's a bit of a wall of text - but feel free to ask clarifying questions if something seems unclear, and we'll also use that feedback to improve the lesson overall for everyone.
 
 ## Creating `PointsHook.sol`
 
@@ -86,7 +86,7 @@ The first thing we'll do is set up a new Foundry project.
 
 If you don't have Foundry installed on your computer already - you can follow the instructions at this link for your operating system - https://book.getfoundry.sh/getting-started/installation
 
-Once Foundry is setup, in your terminal, type the following to initialize a new project:
+Once Foundry is set up, in your terminal, type the following to initialize a new project:
 
 ```bash
 forge init points-hook
@@ -100,7 +100,7 @@ Now, let's install the Uniswap `v4-periphery` contracts as a dependency.
 forge install https://github.com/Uniswap/v4-periphery
 ```
 
-Next, we'll se up the remappings so that our shorthand syntax for importing contracts from the dependencies work nicely.
+Next, we'll set up the remappings so that our shorthand syntax for importing contracts from the dependencies work nicely.
 
 ```bash
 forge remappings > remappings.txt
@@ -114,7 +114,7 @@ rm ./\*_/Counter_.sol
 
 Great!
 
-One last thing actually. Since v4 uses transient storage which is only available after Ethereum's cancun hard fork and on Solidity versions >= 0.8.24 - we must set some config in our `foundry.toml` config file.
+One last thing, actually. Since v4 uses transient storage which is only available after Ethereum's cancun hard fork and on Solidity versions >= 0.8.24 - we must set some config in our `foundry.toml` config file.
 
 To do that, open up the generated `foundry.toml` config file, and add the following lines to it:
 
@@ -210,7 +210,7 @@ IPoolManager \_manager
 }
 ```
 
-Hopefully most of this should be fairly self explanatory. The two libraries we imported aren't actually being used right now - but we'll see their uses shortly. Apart from that, we're just initializing the hook and the ERC-1155 contract, set up the read only function which specifies which permissions this hook needs and the ERC-1155 `uri` function, and created stub functions for `afterSwap`.
+Hopefully most of this should be fairly self-explanatory. The two libraries we imported aren't actually being used right now - but we'll see their uses shortly. Apart from that, we're just initializing the hook and the ERC-1155 contract, set up the read only function which specifies which permissions this hook needs and the ERC-1155 `uri` function, and created stub functions for `afterSwap`.
 
 Also, note that hook functions return their own function selector at the end. This must be true always, and if something other than the selector is returned, the hook call is considered unsuccessful. The second argument being returned from `afterSwap` can be safely set to 0 for now - and will be 0 for most of the use cases. What it means and how that second argument works is a topic for later when we study NoOp hooks.
 
@@ -218,9 +218,9 @@ Also, note that hook functions return their own function selector at the end. Th
 
 Before we code out the actual hook functions, let's create a little helper function to mint tokens to the user when it is time to assign points.
 
-Note that both our hook functions - and actually (almost) all hook functions - have a `bytes calldata hookData` parameter that comes with it. This param can be used to attach arbitrary data for usage by the hook. We'll use this parameter to encode data about who the user is (who should get points). We cannot use the `address sender` parameter in hook functions to do that since that contains the address of the router contract. Therefore, we will ask the user to pass in their own address via `hookData` by simply `abi.encode`'ing their own address.
+Note that both our hook functions - and actually (almost) all hook functions - have a `bytes calldata hookData` parameter that comes with it. This param can be used to attach arbitrary data for usage by the hook. We'll use this parameter to encode data about whom the user is (who should get points). We cannot use the `address sender` parameter in hook functions to do that since that contains the address of the router contract. Therefore, we will ask the user to pass in their own address via `hookData` by simply `abi.encode`'ing their own address.
 
-Now, let's also create a helper `_assignPoints` function that we can just call when we figure out how much points to assign
+Now, let's also create a helper `_assignPoints` function that we can just call when we figure out how many points to assign
 
 ```solidity
 function _assignPoints(
@@ -253,7 +253,7 @@ But with this helper in place, now we can move on to actually writing our hook f
 
 Let's quickly recall our requirements for how and when to assign points for a swap.
 
-1. Make sure this is an `ETH - TOKEN` pool
+1. Make sure this is a `ETH - TOKEN` pool
 2. Make sure this swap is to buy `TOKEN` in exchange for `ETH`
 3. Mint points equal to 20% of the amount of ETH being swapped in
 
@@ -327,7 +327,7 @@ uint160 flags = uint160(1 << 0);
 address myAddr = address(flags);
 ```
 
-`1 « 0` is simply `1` left-shifted by 0, i.e. `1 \* 2^0` which is just `1`. Therefore, we assigned `myAddress` to the decimal value 1. When we type cast this to an address type, it will pad the value `0x1` with extra zeroes and we end up at `0x0000000000000000000000000000000000000001`
+`1 « 0` is simply `1` left-shifted by 0, i.e. `1 \* 2^0` which is just `1`. Therefore, we assigned `myAddress` to the decimal value 1. When we type cast this to an address type, it will pad the value `0x1` with extra zeroes, and we end up at `0x0000000000000000000000000000000000000001`
 
 Maybe this was a simple example though, let's consider generating an address that has `1` at the fourth bit and zeroes otherwise.
 
@@ -343,7 +343,7 @@ In this case, we use `1 « 3` which is `1 \* 2^3` i.e. `8` in decimal. 8 in bina
 
 So, the value of `flags` here is `0x8`
 
-When we convert this to an `address`, it pads the extra zeroes and we get `0x0000000000000000000000000000000000000008`
+When we convert this to an `address`, it pads the extra zeroes, and we get `0x0000000000000000000000000000000000000008`
 
 If you convert it to binary, you'll see the trailing 4 bits being `1000` i.e. we got a `1` at the fourth bit and `0` everywhere else.
 
@@ -365,7 +365,7 @@ If you haven't done Foundry testing before, I'll go over a couple key points:
 
 1. Each test contract must import from the `Test.sol` contract included in the `forge-std` library installed by default in every Foundry project
 2. Each test contract must have a setUp() function that does whatever initialization is necessary. In our case, this means deploying the hook and attaching it to a pool, for example.
-3. Every individual test must be a public function in the contract whose name starts with `test\_`
+3. Every individual test must be a public function in the contract whose name starts with `test_`
 
 We'll import mostly the same contracts as in our actual hook code - with a couple neat helpers. Let's set up the initial structure first:
 
@@ -423,7 +423,7 @@ Let's now start actually writing the `setUp` function. Basically, before we can 
 1. Deploy an instance of the PoolManager
 2. Deploy periphery router contracts for swapping, modifying liquidity, etc
 3. Deploy the `TOKEN` ERC-20 contract (we'll use `MockERC20` here)
-4. Mint a bunch of TOKEN supply to ourselves so we can use it for adding liquidity
+4. Mint a bunch of TOKEN supply to ourselves, so we can use it for adding liquidity
 5. Mine a contract address for our hook using `HookMiner`
 6. Deploy our hook contract
 7. Approve our `TOKEN` for spending on the periphery router contracts
@@ -495,7 +495,7 @@ deployFreshManagerAndRouters();
 }
 ```
 
-I have added comments over the code to explain what is going on, but it's basically the 8 steps outlined above.
+I have added comments over the code to explain what is going on, but it's basically the 9 steps outlined above.
 
 One thing that may be confusing to see is when we are adding liquidity, we say `liquidityDelta = 1` ether, but are transferring `amount0Delta + 1` to the function call as value. Well, `liquidityDelta` is not an amount, directly.
 
@@ -505,7 +505,7 @@ In this case, instead of knowing `x` beforehand, we are saying we know `L` befor
 
 To dive deeper into these concepts, while not required, you can read this blog post I wrote on how these calculations work - https://hackmd.io/@vFMCdNzHQNqyPq_Rej0IIw/H12JlwSYA
 
-With the set up complete, we can start writing tests. For now, we are going to keep things simple and only write one test
+With the setup complete, we can start writing tests. For now, we are going to keep things simple and only write one test
 
 - Swap - make sure we get points for swapping
 
@@ -579,7 +579,7 @@ If you see this screen - great! If they're failing, something is wrong - try and
 
 This implementation is far from perfect - and far from being a production level heavy (even if you are convinced of the idea). There are some edge cases here we haven't handled, and also our tests are far from comprehensive (though being such a simple hook, maybe there isn't much going wrong anyway).
 
-With that said, the goal of this lesson was not to build an actual, meaningful, production-level hook. That will generally be the theme for the course. While we will be building much more complex hooks than this one, there will always be some edge cases somewhere that will make it not ideal for deploying to production as-is so we can stick within the time slots we have for workshops and not make this course last months and months instead of a few weeks. You can, however, improve upon these ideas and make them more production-ready for use in your Capstone Projects, or just build your own ideas anyway. As always, building something production-ready is a longer process than can fit in a single 90 minute workshop or things like that, so treat these as "Proof of Concepts".
+With that said, the goal of this lesson was not to build an actual, meaningful, production-level hook. That will generally be the theme for the course. While we will be building much more complex hooks than this one, there will always be some edge cases somewhere that will make it not ideal for deploying to production as-is, so we can stick within the time slots we have for workshops and not make this course last months and months instead of a few weeks. You can, however, improve upon these ideas and make them more production-ready for use in your Capstone Projects, or just build your own ideas anyway. As always, building something production-ready is a longer process than can fit in a single 90 minute workshop or things like that, so treat these as "Proof of Concepts".
 
 BUT - hopefully you learned some stuff! You've successfully now built your first hook and tested it.
 
