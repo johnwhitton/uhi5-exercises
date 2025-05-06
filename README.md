@@ -6,6 +6,7 @@ Please read [EXERCISE.md](./EXERCISE.md) for an overview of the exercise.
 1. [FirstHook.md](./exercises/FirstHook.md)
 2. [DynamicFees.md](./exercises/DynamicFees.md)
 3. [LimitOrderHook1.md](./exercises/LimitOrderHook1.md)
+4. [LimitOrderHook2.md](./exercises/LimitOrderHook2.md)
 
 ## Usage
 
