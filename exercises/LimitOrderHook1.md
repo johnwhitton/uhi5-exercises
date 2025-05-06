@@ -43,7 +43,7 @@ So - roughly, the way this will work is:
 
 Also - multiple people can potentially place the exact same order. Two people can choose to sell the same token, at the same tick, in the same pool - as an order. Therefore, we need a way to keep track of how many output tokens are claimable for each user (assuming their order has been executed).
 
-To do so, we will have our hook be an `ERC-1155` contract as well - so we can issue "claim" tokens to the users proportional to how many input tokens they provided for their order, and will use that to calculate how many output tokens they have available to claim.
+To do so, we will have our hook be a `ERC-1155` contract as well - so we can issue "claim" tokens to the users proportional to how many input tokens they provided for their order, and will use that to calculate how many output tokens they have available to claim.
 
 ## Some Assumptions
 
@@ -102,9 +102,10 @@ Create a new file named `TakeProfitsHook.sol` under the `src/` directory - and w
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import {BaseHook} from "v4-periphery/src/base/hooks/BaseHook.sol";
+import {BaseHook} from "v4-periphery/src/utils/BaseHook.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
+import {SwapParams} from "v4-core/types/PoolOperation.sol";
 import {Hooks} from "v4-core/libraries/Hooks.sol";
 
 import {PoolId, PoolIdLibrary} from "v4-core/types/PoolId.sol";
@@ -121,12 +122,12 @@ import {BalanceDelta} from "v4-core/types/BalanceDelta.sol";
 import {FixedPointMathLib} from "solmate/src/utils/FixedPointMathLib.sol";
 
 contract TakeProfitsHook is BaseHook, ERC1155 {
-// StateLibrary is new here and we haven't seen that before
-// It's used to add helper functions to the PoolManager to read
-// storage values.
-// In this case, we use it for accessing `currentTick` values
-// from the pool manager
-using StateLibrary for IPoolManager;
+    // StateLibrary is new here and we haven't seen that before
+    // It's used to add helper functions to the PoolManager to read
+    // storage values.
+    // In this case, we use it for accessing `currentTick` values
+    // from the pool manager
+    using StateLibrary for IPoolManager;
 
     // PoolIdLibrary used to convert PoolKeys to IDs
     using PoolIdLibrary for PoolKey;
@@ -141,58 +142,41 @@ using StateLibrary for IPoolManager;
     error NotEnoughToClaim();
 
     // Constructor
-    constructor(
-        IPoolManager _manager,
-        string memory _uri
-    ) BaseHook(_manager) ERC1155(_uri) {}
+    constructor(IPoolManager _manager, string memory _uri) BaseHook(_manager) ERC1155(_uri) {}
 
     // BaseHook Functions
-    function getHookPermissions()
-        public
-        pure
-        override
-        returns (Hooks.Permissions memory)
-    {
-        return
-            Hooks.Permissions({
-                beforeInitialize: false,
-                afterInitialize: true,
-                beforeAddLiquidity: false,
-                afterAddLiquidity: false,
-                beforeRemoveLiquidity: false,
-                afterRemoveLiquidity: false,
-                beforeSwap: false,
-                afterSwap: true,
-                beforeDonate: false,
-                afterDonate: false,
-                beforeSwapReturnDelta: false,
-                afterSwapReturnDelta: false,
-                afterAddLiquidityReturnDelta: false,
-                afterRemoveLiquidityReturnDelta: false
-            });
+    function getHookPermissions() public pure override returns (Hooks.Permissions memory) {
+        return Hooks.Permissions({
+            beforeInitialize: false,
+            afterInitialize: true,
+            beforeAddLiquidity: false,
+            afterAddLiquidity: false,
+            beforeRemoveLiquidity: false,
+            afterRemoveLiquidity: false,
+            beforeSwap: false,
+            afterSwap: true,
+            beforeDonate: false,
+            afterDonate: false,
+            beforeSwapReturnDelta: false,
+            afterSwapReturnDelta: false,
+            afterAddLiquidityReturnDelta: false,
+            afterRemoveLiquidityReturnDelta: false
+        });
     }
 
-    function afterInitialize(
-        address,
-        PoolKey calldata key,
-        uint160,
-        int24 tick
-    ) external override onlyPoolManager returns (bytes4) {
-    	// TODO
+    function _afterInitialize(address, PoolKey calldata key, uint160, int24 tick) internal override returns (bytes4) {
+        // TODO
         return this.afterInitialize.selector;
     }
 
-    function afterSwap(
-        address sender,
-        PoolKey calldata key,
-        IPoolManager.SwapParams calldata params,
-        BalanceDelta,
-        bytes calldata
-    ) external override onlyPoolManager returns (bytes4, int128) {
-    	// TODO
+    function _afterSwap(address sender, PoolKey calldata key, SwapParams calldata params, BalanceDelta, bytes calldata)
+        internal
+        override
+        returns (bytes4, int128)
+    {
+        // TODO
         return (this.afterSwap.selector, 0);
     }
-
 }
 ```
 
@@ -436,7 +420,7 @@ To keep things a bit readable - we'll make the part of "swap + settle balances" 
 ```Solidity
 function swapAndSettleBalances(
     PoolKey calldata key,
-    IPoolManager.SwapParams memory params
+    SwapParams memory params
     ) internal returns (BalanceDelta) {
     // Conduct the swap inside the Pool Manager
     BalanceDelta delta = poolManager.swap(key, params, "");
@@ -494,7 +478,7 @@ function executeOrder(
     // Do the actual swap and settle all balances
     BalanceDelta delta = swapAndSettleBalances(
         key,
-        IPoolManager.SwapParams({
+        SwapParams({
         zeroForOne: zeroForOne,
         // We provide a negative value here to signify an "exact input for output" swap
         amountSpecified: -int256(inputAmount),
@@ -542,6 +526,7 @@ import {MockERC20} from "solmate/src/test/utils/mocks/MockERC20.sol";
 
 import {PoolManager} from "v4-core/PoolManager.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
 
 import {PoolId, PoolIdLibrary} from "v4-core/types/PoolId.sol";
 import {Currency, CurrencyLibrary} from "v4-core/types/Currency.sol";
@@ -622,7 +607,7 @@ function setUp() public {
     // Some liquidity from -60 to +60 tick range
     modifyLiquidityRouter.modifyLiquidity(
         key,
-        IPoolManager.ModifyLiquidityParams({
+        ModifyLiquidityParams({
             tickLower: -60,
             tickUpper: 60,
             liquidityDelta: 10 ether,
@@ -633,7 +618,7 @@ function setUp() public {
     // Some liquidity from -120 to +120 tick range
     modifyLiquidityRouter.modifyLiquidity(
         key,
-        IPoolManager.ModifyLiquidityParams({
+        ModifyLiquidityParams({
             tickLower: -120,
             tickUpper: 120,
             liquidityDelta: 10 ether,
@@ -644,7 +629,7 @@ function setUp() public {
     // some liquidity for full range
     modifyLiquidityRouter.modifyLiquidity(
         key,
-        IPoolManager.ModifyLiquidityParams({
+        ModifyLiquidityParams({
             tickLower: TickMath.minUsableTick(60),
             tickUpper: TickMath.maxUsableTick(60),
             liquidityDelta: 10 ether,
