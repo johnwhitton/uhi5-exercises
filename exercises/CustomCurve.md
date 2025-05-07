@@ -66,11 +66,11 @@ Therefore, `BeforeSwapDelta` varies from `BalanceDelta` in its format. `BalanceD
 
 But why are we talking about all of this? Don't worry - we have a good reason.
 
-Let's take a look at the `swap(`)`function within`PoolManager.sol`. Irrelevant code has been commented out for now.
+Let's take a look at the `swap()` function within`PoolManager.sol`. Irrelevant code has been commented out for now.
 
 ```Solidity
 /// @inheritdoc IPoolManager
-function swap(PoolKey memory key, IPoolManager.SwapParams memory params, bytes calldata hookData)
+function swap(PoolKey memory key, SwapParams memory params, bytes calldata hookData)
     external
     onlyWhenUnlocked
     noDelegateCall
@@ -118,7 +118,7 @@ Let's take a look at the `Hooks.sol` library to see what's happening inside that
 
 ```Solidity
 /// @notice calls beforeSwap hook if permissioned and validates return value
-function beforeSwap(IHooks self, PoolKey memory key, IPoolManager.SwapParams memory params, bytes calldata hookData)
+function beforeSwap(IHooks self, PoolKey memory key, SwapParams memory params, bytes calldata hookData)
     internal
     returns (int256 amountToSwap, BeforeSwapDelta hookReturn, uint24 lpFeeOverride)
     {
@@ -275,6 +275,7 @@ Create a new file named `CSMM.sol` under the `src/` directory and write the foll
 pragma solidity ^0.8.0;
 
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
 import {PoolId} from "v4-core/types/PoolId.sol";
 import {Currency} from "v4-core/types/Currency.sol";
@@ -342,7 +343,7 @@ using CurrencySettler for Currency;
     function beforeAddLiquidity(
         address,
         PoolKey calldata,
-        IPoolManager.ModifyLiquidityParams calldata,
+        ModifyLiquidityParams calldata,
         bytes calldata
     ) external pure override returns (bytes4) {
         revert AddLiquidityThroughHook();
@@ -356,7 +357,7 @@ using CurrencySettler for Currency;
     function beforeSwap(
         address,
         PoolKey calldata key,
-        IPoolManager.SwapParams calldata params,
+        SwapParams calldata params,
         bytes calldata
     ) external override returns (bytes4, BeforeSwapDelta, uint24) {
     	// TODO
@@ -496,7 +497,7 @@ For explanation of steps (2) and (3), read the code comments which go into detai
 function beforeSwap(
     address,
     PoolKey calldata key,
-    IPoolManager.SwapParams calldata params,
+    SwapParams calldata params,
     bytes calldata
 ) external override returns (bytes4, BeforeSwapDelta, uint24) {
     uint256 amountInOutPositive = params.amountSpecified > 0
@@ -646,6 +647,7 @@ import {IHooks} from "v4-core/interfaces/IHooks.sol";
 import {Hooks} from "v4-core/libraries/Hooks.sol";
 import {TickMath} from "v4-core/libraries/TickMath.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
 import {BalanceDelta} from "v4-core/types/BalanceDelta.sol";
 import {PoolId, PoolIdLibrary} from "v4-core/types/PoolId.sol";
@@ -709,7 +711,7 @@ function test_cannotModifyLiquidity() public {
     vm.expectRevert();
     modifyLiquidityRouter.modifyLiquidity(
         key,
-        IPoolManager.ModifyLiquidityParams({
+        ModifyLiquidityParams({
             tickLower: -60,
             tickUpper: 60,
             liquidityDelta: 1e18,
@@ -765,7 +767,7 @@ function test_swap_exactInput_zeroForOne() public {
     uint balanceOfTokenBBefore = key.currency1.balanceOfSelf();
     swapRouter.swap(
         key,
-        IPoolManager.SwapParams({
+        SwapParams({
             zeroForOne: true,
             amountSpecified: -100e18,
             sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
@@ -798,7 +800,7 @@ function test_swap_exactOutput_zeroForOne() public {
     uint balanceOfTokenBBefore = key.currency1.balanceOfSelf();
     swapRouter.swap(
         key,
-        IPoolManager.SwapParams({
+        SwapParams({
             zeroForOne: true,
             amountSpecified: 100e18,
             sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
@@ -816,6 +818,15 @@ function test_swap_exactOutput_zeroForOne() public {
 ```
 
 Try running `forge test` now and all your tests should pass!
+
+```bash
+Ran 4 tests for test/CSMM.t.sol:CSMMTest
+[PASS] test_cannotModifyLiquidity() (gas: 43101)
+[PASS] test_claimTokenBalances() (gas: 20769)
+[PASS] test_swap_exactInput_zeroForOne() (gas: 130752)
+[PASS] test_swap_exactOutput_zeroForOne() (gas: 130676)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.27ms (995.71µs CPU time)
+```
 
 ## Further Improvements
 
