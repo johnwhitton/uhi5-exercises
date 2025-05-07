@@ -9,6 +9,7 @@ Please read [EXERCISE.md](./EXERCISE.md) for an overview of the exercise.
 4. [LimitOrderHook2.md](./exercises/LimitOrderHook2.md)
 5. [JITRebalancing.md](./exercises/JITRebalancing.md)
 6. [DynamicFeesNezlobinsDirectionalFee.md](./exercises/DynamicFeesNezlobinsDirectionalFee.md)
+7. [CustomCurve.md](./exercises/CustomCurve.md)
 
 ## Usage
 
