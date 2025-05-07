@@ -12,6 +12,7 @@ Please read [EXERCISE.md](./EXERCISE.md) for an overview of the exercise.
 7. [CustomCurve.md](./exercises/CustomCurve.md)
 8. [MEV.md](./exercises/MEV.md)
 9. [CoincidenceOfWants.md](./exercises/CoincidenceOfWants.md)
+10. [SwapAndBridge.md](./exercises/SwapAndBridge.md)
 
 ## Usage
 
