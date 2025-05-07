@@ -11,6 +11,7 @@ Please read [EXERCISE.md](./EXERCISE.md) for an overview of the exercise.
 6. [DynamicFeesNezlobinsDirectionalFee.md](./exercises/DynamicFeesNezlobinsDirectionalFee.md)
 7. [CustomCurve.md](./exercises/CustomCurve.md)
 8. [MEV.md](./exercises/MEV.md)
+9. [CoincidenceOfWants.md](./exercises/CoincidenceOfWants.md)
 
 ## Usage
 
