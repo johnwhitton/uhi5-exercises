@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.26;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Currency, CurrencyLibrary} from "v4-core/types/Currency.sol";
@@ -72,6 +72,7 @@ contract SwapAndBridgeOptimismRouter is Ownable {
             manager.unlock(abi.encode(CallbackData(msg.sender, settings, key, params, hookData))), (BalanceDelta)
         );
 
+        // Send any ETH left over to the sender
         uint256 ethBalance = address(this).balance;
         if (ethBalance > 0) {
             // CurrencyLibrary.NATIVE.transfer(msg.sender, ethBalance);
