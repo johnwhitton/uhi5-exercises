@@ -234,14 +234,14 @@ So we can now do things like `pendingOrders[poolKey.toId()][tickToSellAt][zeroFo
 Last helper function for now - we need to be able to represent this position as a `uint256` to use it as the Token ID for ERC-1155 claim tokens we issue to the order maker. We also need to keep track of the total supply of these claim tokens we have given out. So, let's create another mapping - and then a helper.
 
 ```Solidity
-mapping(uint256 positionId => uint256 claimsSupply)
+mapping(uint256 orderId => uint256 claimsSupply)
     public claimTokensSupply;
 ```
 
 and the helper:
 
 ```Solidity
-function getPositionId(
+function getOrderId(
     PoolKey calldata key,
     int24 tick,
     bool zeroForOne
@@ -266,9 +266,9 @@ function placeOrder(
     pendingOrders[key.toId()][tick][zeroForOne] += inputAmount;
 
     // Mint claim tokens to user equal to their `inputAmount`
-    uint256 positionId = getPositionId(key, tick, zeroForOne);
-    claimTokensSupply[positionId] += inputAmount;
-    _mint(msg.sender, positionId, inputAmount, "");
+    uint256 orderId = getOrderId(key, tick, zeroForOne);
+    claimTokensSupply[orderId] += inputAmount;
+    _mint(msg.sender, orderId, inputAmount, "");
 
     // Depending on direction of swap, we select the proper input token
     // and request a transfer of those tokens to the hook contract
@@ -298,17 +298,17 @@ function cancelOrder(
     ) external {
     // Get lower actually usable tick for their order
     int24 tick = getLowerUsableTick(tickToSellAt, key.tickSpacing);
-    uint256 positionId = getPositionId(key, tick, zeroForOne);
+    uint256 orderId = getOrderId(key, tick, zeroForOne);
 
     // Check how many claim tokens they have for this position
-    uint256 positionTokens = balanceOf(msg.sender, positionId);
+    uint256 positionTokens = balanceOf(msg.sender, orderId);
     if (positionTokens < amountToCancel) revert NotEnoughToClaim();
 
     // Remove their `amountToCancel` worth of position from pending orders
     pendingOrders[key.toId()][tick][zeroForOne] -= amountToCancel;
     // Reduce claim token total supply and burn their share
-    claimTokensSupply[positionId] -= amountToCancel;
-    _burn(msg.sender, positionId, amountToCancel);
+    claimTokensSupply[orderId] -= amountToCancel;
+    _burn(msg.sender, orderId, amountToCancel);
 
     // Send them their input token
     Currency token = zeroForOne ? key.currency0 : key.currency1;
@@ -352,7 +352,7 @@ which is also equal to `(positionTokens * totalClaimableForPosition) / totalInpu
 With this sorted - let's first create a mapping to keep track of output token amounts:
 
 ```Solidity
-mapping(uint256 positionId => uint256 outputClaimable)
+mapping(uint256 orderId => uint256 outputClaimable)
 public claimableOutputTokens;
 ```
 
@@ -367,18 +367,18 @@ function redeem(
     ) external {
     // Get lower actually usable tick for their order
     int24 tick = getLowerUsableTick(tickToSellAt, key.tickSpacing);
-    uint256 positionId = getPositionId(key, tick, zeroForOne);
+    uint256 orderId = getOrderId(key, tick, zeroForOne);
 
     // If no output tokens can be claimed yet i.e. order hasn't been filled
     // throw error
-    if (claimableOutputTokens[positionId] == 0) revert NothingToClaim();
+    if (claimableOutputTokens[orderId] == 0) revert NothingToClaim();
 
     // they must have claim tokens >= inputAmountToClaimFor
-    uint256 positionTokens = balanceOf(msg.sender, positionId);
+    uint256 positionTokens = balanceOf(msg.sender, orderId);
     if (positionTokens < inputAmountToClaimFor) revert NotEnoughToClaim();
 
-    uint256 totalClaimableForPosition = claimableOutputTokens[positionId];
-    uint256 totalInputAmountForPosition = claimTokensSupply[positionId];
+    uint256 totalClaimableForPosition = claimableOutputTokens[orderId];
+    uint256 totalInputAmountForPosition = claimTokensSupply[orderId];
 
     // outputAmount = (inputAmountToClaimFor * totalClaimableForPosition) / (totalInputAmountForPosition)
     uint256 outputAmount = inputAmountToClaimFor.mulDivDown(
@@ -389,9 +389,9 @@ function redeem(
     // Reduce claimable output tokens amount
     // Reduce claim token total supply for position
     // Burn claim tokens
-    claimableOutputTokens[positionId] -= outputAmount;
-    claimTokensSupply[positionId] -= inputAmountToClaimFor;
-    _burn(msg.sender, positionId, inputAmountToClaimFor);
+    claimableOutputTokens[orderId] -= outputAmount;
+    claimTokensSupply[orderId] -= inputAmountToClaimFor;
+    _burn(msg.sender, orderId, inputAmountToClaimFor);
 
     // Transfer output tokens
     Currency token = zeroForOne ? key.currency1 : key.currency0;
@@ -491,13 +491,13 @@ function executeOrder(
 
     // `inputAmount` has been deducted from this position
     pendingOrders[key.toId()][tick][zeroForOne] -= inputAmount;
-    uint256 positionId = getPositionId(key, tick, zeroForOne);
+    uint256 orderId = getOrderId(key, tick, zeroForOne);
     uint256 outputAmount = zeroForOne
         ? uint256(int256(delta.amount1()))
         : uint256(int256(delta.amount0()));
 
     // `outputAmount` worth of tokens now can be claimed/redeemed by position holders
-    claimableOutputTokens[positionId] += outputAmount;
+    claimableOutputTokens[orderId] += outputAmount;
 }
 ```
 
@@ -678,12 +678,12 @@ function test_placeOrder() public {
     assertEq(originalBalance - newBalance, amount);
 
     // Check the balance of ERC-1155 tokens we received
-    uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-    uint256 tokenBalance = hook.balanceOf(address(this), positionId);
+    uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+    uint256 tokenBalance = hook.balanceOf(address(this), orderId);
 
     // Ensure that we were, in fact, given ERC-1155 tokens for the order
     // equal to the `amount` of token0 tokens we placed the order for
-    assertTrue(positionId != 0);
+    assertTrue(orderId != 0);
     assertEq(tokenBalance, amount);
 
 }
@@ -748,8 +748,8 @@ function test_cancelOrder() public {
     assertEq(originalBalance - newBalance, amount);
 
     // Check the balance of ERC-1155 tokens we received
-    uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-    uint256 tokenBalance = hook.balanceOf(address(this), positionId);
+    uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+    uint256 tokenBalance = hook.balanceOf(address(this), orderId);
     assertEq(tokenBalance, amount);
 
     // Cancel the order
@@ -759,7 +759,7 @@ function test_cancelOrder() public {
     uint256 finalBalance = token0.balanceOfSelf();
     assertEq(finalBalance, originalBalance);
 
-    tokenBalance = hook.balanceOf(address(this), positionId);
+    tokenBalance = hook.balanceOf(address(this), orderId);
     assertEq(tokenBalance, 0);
 
 }

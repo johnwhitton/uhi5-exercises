@@ -120,12 +120,12 @@ contract TakeProfitsHookTest is Test, Deployers {
         assertEq(originalBalance - newBalance, amount);
 
         // Check the balance of ERC-1155 tokens we received
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 tokenBalance = hook.balanceOf(address(this), positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 tokenBalance = hook.balanceOf(address(this), orderId);
 
         // Ensure that we were, in fact, given ERC-1155 tokens for the order
         // equal to the `amount` of token0 tokens we placed the order for
-        assertTrue(positionId != 0);
+        assertTrue(orderId != 0);
         assertEq(tokenBalance, amount);
     }
 
@@ -143,8 +143,8 @@ contract TakeProfitsHookTest is Test, Deployers {
         assertEq(originalBalance - newBalance, amount);
 
         // Check the balance of ERC-1155 tokens we received
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 tokenBalance = hook.balanceOf(address(this), positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 tokenBalance = hook.balanceOf(address(this), orderId);
         assertEq(tokenBalance, amount);
 
         // Cancel the order
@@ -154,7 +154,7 @@ contract TakeProfitsHookTest is Test, Deployers {
         uint256 finalBalance = token0.balanceOfSelf();
         assertEq(finalBalance, originalBalance);
 
-        tokenBalance = hook.balanceOf(address(this), positionId);
+        tokenBalance = hook.balanceOf(address(this), orderId);
         assertEq(tokenBalance, 0);
     }
 
@@ -186,8 +186,8 @@ contract TakeProfitsHookTest is Test, Deployers {
         assertEq(pendingTokensForPosition, 0);
 
         // Check that the hook contract has the expected number of token1 tokens ready to redeem
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 claimableOutputTokens = hook.claimableOutputTokens(positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 claimableOutputTokens = hook.claimableOutputTokens(orderId);
         uint256 hookContractToken1Balance = token1.balanceOf(address(hook));
         assertEq(claimableOutputTokens, hookContractToken1Balance);
 
@@ -222,8 +222,8 @@ contract TakeProfitsHookTest is Test, Deployers {
         assertEq(tokensLeftToSell, 0);
 
         // Check that the hook contract has the expected number of token0 tokens ready to redeem
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 claimableOutputTokens = hook.claimableOutputTokens(positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 claimableOutputTokens = hook.claimableOutputTokens(orderId);
         uint256 hookContractToken0Balance = token0.balanceOf(address(hook));
         assertEq(claimableOutputTokens, hookContractToken0Balance);
 

@@ -31,8 +31,8 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
     mapping(PoolId poolId => mapping(int24 tickToSellAt => mapping(bool zeroForOne => uint256 inputAmount))) public
         pendingOrders;
 
-    mapping(uint256 positionId => uint256 outputClaimable) public claimableOutputTokens;
-    mapping(uint256 positionId => uint256 claimsSupply) public claimTokensSupply;
+    mapping(uint256 orderId => uint256 outputClaimable) public claimableOutputTokens;
+    mapping(uint256 orderId => uint256 claimsSupply) public claimTokensSupply;
 
     // Errors
     error InvalidOrder();
@@ -113,9 +113,9 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
         pendingOrders[key.toId()][tick][zeroForOne] += inputAmount;
 
         // Mint claim tokens to user equal to their `inputAmount`
-        uint256 positionId = getPositionId(key, tick, zeroForOne);
-        claimTokensSupply[positionId] += inputAmount;
-        _mint(msg.sender, positionId, inputAmount, "");
+        uint256 orderId = getOrderId(key, tick, zeroForOne);
+        claimTokensSupply[orderId] += inputAmount;
+        _mint(msg.sender, orderId, inputAmount, "");
 
         // Depending on direction of swap, we select the proper input token
         // and request a transfer of those tokens to the hook contract
@@ -129,17 +129,17 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
     function cancelOrder(PoolKey calldata key, int24 tickToSellAt, bool zeroForOne, uint256 amountToCancel) external {
         // Get lower actually usable tick for their order
         int24 tick = getLowerUsableTick(tickToSellAt, key.tickSpacing);
-        uint256 positionId = getPositionId(key, tick, zeroForOne);
+        uint256 orderId = getOrderId(key, tick, zeroForOne);
 
         // Check how many claim tokens they have for this position
-        uint256 positionTokens = balanceOf(msg.sender, positionId);
+        uint256 positionTokens = balanceOf(msg.sender, orderId);
         if (positionTokens < amountToCancel) revert NotEnoughToClaim();
 
         // Remove their `amountToCancel` worth of position from pending orders
         pendingOrders[key.toId()][tick][zeroForOne] -= amountToCancel;
         // Reduce claim token total supply and burn their share
-        claimTokensSupply[positionId] -= amountToCancel;
-        _burn(msg.sender, positionId, amountToCancel);
+        claimTokensSupply[orderId] -= amountToCancel;
+        _burn(msg.sender, orderId, amountToCancel);
 
         // Send them their input token
         Currency token = zeroForOne ? key.currency0 : key.currency1;
@@ -151,18 +151,18 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
     {
         // Get lower actually usable tick for their order
         int24 tick = getLowerUsableTick(tickToSellAt, key.tickSpacing);
-        uint256 positionId = getPositionId(key, tick, zeroForOne);
+        uint256 orderId = getOrderId(key, tick, zeroForOne);
 
         // If no output tokens can be claimed yet i.e. order hasn't been filled
         // throw error
-        if (claimableOutputTokens[positionId] == 0) revert NothingToClaim();
+        if (claimableOutputTokens[orderId] == 0) revert NothingToClaim();
 
         // they must have claim tokens >= inputAmountToClaimFor
-        uint256 positionTokens = balanceOf(msg.sender, positionId);
+        uint256 positionTokens = balanceOf(msg.sender, orderId);
         if (positionTokens < inputAmountToClaimFor) revert NotEnoughToClaim();
 
-        uint256 totalClaimableForPosition = claimableOutputTokens[positionId];
-        uint256 totalInputAmountForPosition = claimTokensSupply[positionId];
+        uint256 totalClaimableForPosition = claimableOutputTokens[orderId];
+        uint256 totalInputAmountForPosition = claimTokensSupply[orderId];
 
         // outputAmount = (inputAmountToClaimFor * totalClaimableForPosition) / (totalInputAmountForPosition)
         uint256 outputAmount = inputAmountToClaimFor.mulDivDown(totalClaimableForPosition, totalInputAmountForPosition);
@@ -170,9 +170,9 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
         // Reduce claimable output tokens amount
         // Reduce claim token total supply for position
         // Burn claim tokens
-        claimableOutputTokens[positionId] -= outputAmount;
-        claimTokensSupply[positionId] -= inputAmountToClaimFor;
-        _burn(msg.sender, positionId, inputAmountToClaimFor);
+        claimableOutputTokens[orderId] -= outputAmount;
+        claimTokensSupply[orderId] -= inputAmountToClaimFor;
+        _burn(msg.sender, orderId, inputAmountToClaimFor);
 
         // Transfer output tokens
         Currency token = zeroForOne ? key.currency1 : key.currency0;
@@ -261,11 +261,11 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
 
         // `inputAmount` has been deducted from this position
         pendingOrders[key.toId()][tick][zeroForOne] -= inputAmount;
-        uint256 positionId = getPositionId(key, tick, zeroForOne);
+        uint256 orderId = getOrderId(key, tick, zeroForOne);
         uint256 outputAmount = zeroForOne ? uint256(int256(delta.amount1())) : uint256(int256(delta.amount0()));
 
         // `outputAmount` worth of tokens now can be claimed/redeemed by position holders
-        claimableOutputTokens[positionId] += outputAmount;
+        claimableOutputTokens[orderId] += outputAmount;
     }
 
     function swapAndSettleBalances(PoolKey calldata key, SwapParams memory params) internal returns (BalanceDelta) {
@@ -312,7 +312,7 @@ contract TakeProfitsHook is BaseHook, ERC1155 {
     }
 
     // Helper Functions
-    function getPositionId(PoolKey calldata key, int24 tick, bool zeroForOne) public pure returns (uint256) {
+    function getOrderId(PoolKey calldata key, int24 tick, bool zeroForOne) public pure returns (uint256) {
         return uint256(keccak256(abi.encode(key.toId(), tick, zeroForOne)));
     }
 

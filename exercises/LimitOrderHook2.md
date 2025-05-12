@@ -342,8 +342,8 @@ We will first place an order at Tick 100, i.e. a take-profit order to sell Token
         assertEq(pendingTokensForPosition, 0);
 
         // Check that the hook contract has the expected number of token1 tokens ready to redeem
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 claimableOutputTokens = hook.claimableOutputTokens(positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 claimableOutputTokens = hook.claimableOutputTokens(orderId);
         uint256 hookContractToken1Balance = token1.balanceOf(address(hook));
         assertEq(claimableOutputTokens, hookContractToken1Balance);
 
@@ -385,8 +385,8 @@ This one is pretty much the same thing as the last - except in the opposite dire
         assertEq(tokensLeftToSell, 0);
 
         // Check that the hook contract has the expected number of token0 tokens ready to redeem
-        uint256 positionId = hook.getPositionId(key, tickLower, zeroForOne);
-        uint256 claimableOutputTokens = hook.claimableOutputTokens(positionId);
+        uint256 orderId = hook.getOrderId(key, tickLower, zeroForOne);
+        uint256 claimableOutputTokens = hook.claimableOutputTokens(orderId);
         uint256 hookContractToken0Balance = token0.balanceOf(address(hook));
         assertEq(claimableOutputTokens, hookContractToken0Balance);
 
