@@ -12,16 +12,20 @@ The following is a list of reference material which may be useful for those atte
   - [Ecosystem](#ecosystem)
   - [Academic Articles](#academic-articles)
   - [Github Repositories](#github-repositories)
-    - [AMM](#amm)
+    - [AMM - Capital efficient Pools](#amm---capital-efficient-pools)
     - [Cross Chain Intents](#cross-chain-intents)
     - [Liquidity Indexing and Simulation](#liquidity-indexing-and-simulation)
+    - [Solving](#solving)
     - [Arbitrage](#arbitrage)
+    - [Liquidity Management](#liquidity-management)
+    - [Bridging and Liquidity Rebalancing](#bridging-and-liquidity-rebalancing)
   - [Capital Efficiency for Liquidity Providers](#capital-efficiency-for-liquidity-providers)
   - [Optimized Liquidity Provisioning](#optimized-liquidity-provisioning)
   - [Liquidity Indexing](#liquidity-indexing)
   - [Solving and Intent Execution](#solving-and-intent-execution)
   - [Arbitrage](#arbitrage-1)
     - [MEV](#mev)
+  - [Liquidity Pool Incentives](#liquidity-pool-incentives)
 
 ## Atrium Academy
 
@@ -91,6 +95,11 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 
 ## Ecosystem
 
+Following are articles and websites which are relevant for understanding on-chain liquidity provisioning, order flow and solving.
+
+- [The State of Interop (2025)](https://blog.li.fi/the-state-of-interop-2025-4a75d82a9bb9)
+- [Illuminating Ethereum's Order Flow Landscape (2024)](https://writings.flashbots.net/illuminate-the-order-flow)
+
 ## Academic Articles
 
 - [Concentrated Liquidity Uniswap v3](https://uniswapv3book.com/milestone_0/uniswap-v3.html#concentrated-liquidity)
@@ -105,7 +114,16 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 
 ## Github Repositories
 
-### AMM
+### AMM - Capital efficient Pools
+
+- [Bunni](https://github.com/Bunniapp)
+  - <https://github.com/Bunniapp/analysis>
+  - <https://github.com/Bunniapp/v4-rebalancer> forked from Uniswap <https://github.com/Uniswap/v4-periphery>
+- [SaucePoint](https://github.com/saucepoint)
+  - [MEV Tax Tip](https://github.com/saucepoint/mev-tax-tip): Swap fees porportional to priority fee
+- [Uniswap Labs](https://github.com/Uniswap)
+  - [View only quoter](https://github.com/Uniswap/v4-periphery/pull/296)
+  - [Script to create a pool and provide liquidity](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol)
 
 ### Cross Chain Intents
 
@@ -116,13 +134,46 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 
 ### Liquidity Indexing and Simulation
 
+- [Streaming Fast](https://github.com/streamingfast)
+  - [substreams](https://github.com/streamingfast/substreams)
+  - [firehose-core](https://github.com/streamingfast/firehose-core)
+- [Propellor Heads](https://github.com/propeller-heads)
+  - [tycho-indexer](https://github.com/propeller-heads/tycho-indexer)
+  - [tycho-simulation](https://github.com/propeller-heads/tycho-simulation)
+  - [tycho-execution](https://github.com/propeller-heads/tycho-execution)
+  - [tycho-protocol-sdk](https://github.com/propeller-heads/tycho-protocol-sdk)
+
+### Solving
+
+- [Cow Protocol](https://github.com/cowprotocol)
+  - [services](https://github.com/cowprotocol/services) - [solver](https://github.com/cowprotocol/services/tree/main/crates/solver)
+- [Uniswap Labs](https://github.com/Uniswap)
+  - [artemis](https://github.com/Uniswap/uniswapx-artemis): Sample filler for [UniswapX](https://docs.uniswap.org/contracts/uniswapx/overview) orders.
+  - [UniswapX Service](https://github.com/Uniswap/uniswapx-service): an API to propagate signed, executable [UniswapX](https://docs.uniswap.org/contracts/uniswapx/overview) orders.
+  - [sdks](https://github.com/Uniswap/sdks): see [uniswapx-sdk](https://github.com/Uniswap/sdks/tree/main/sdks/uniswapx-sdk)
+- [Propellor Heads](https://github.com/propeller-heads)
+  - [tycho-indexer](https://github.com/propeller-heads/tycho-indexer)
+  - [tycho-simulation](https://github.com/propeller-heads/tycho-simulation)
+  - [tycho-execution](https://github.com/propeller-heads/tycho-execution)
+  - [tycho-protocol-sdk](https://github.com/propeller-heads/tycho-protocol-sdk)
+
 ### Arbitrage
 
 - [artemis](https://github.com/Uniswap/uniswapx-artemis) from Uniswap
 
-Liquidity Management
+### Liquidity Management
 
-- Uniswap <https://github.com/Uniswap/arbiters> and <https://github.com/Uniswap/the-compact>
+- Intent Based Solutions
+  - [Uniswap Labs](https://github.com/uniswap/)
+    - [arbiters](https://github.com/Uniswap/arbiters)
+    - [the-compact](https://github.com/Uniswap/the-compact)
+
+### Bridging and Liquidity Rebalancing
+
+- [LI.FI](https://github.com/lifinance)
+  - [sdk](https://github.com/lifinance/sdk)
+- [eco](https://github.com/eco)
+  - [Sample Cross-chain liquidity rebalancing](https://github.com/eco/eco-solver/pull/66) using [Lifi sdk](https://docs.li.fi/integrate-li.fi-sdk/li.fi-sdk-overview)
 
 ## Capital Efficiency for Liquidity Providers
 
@@ -141,6 +192,9 @@ Liquidity Management
 
 ## Solving and Intent Execution
 
+- [Shortcut to the Enso Network](https://x.com/EnsoBuild/status/1917162428908925095)
+- [Scaling Unichain with interop](https://docs.google.com/presentation/d/1N5kSBGrDEdqxHkhW9_YooS-L6AyMEBYbkP1VDIMHeao/edit#slide=id.g2c5f9286902_0_68)
+
 ## Arbitrage
 
 ### MEV
@@ -148,76 +202,10 @@ Liquidity Management
 - [Paradigm - Priority is all you need](https://www.paradigm.xyz/2024/06/priority-is-all-you-need)
 - [Quantifying the Value of Revert Protection](https://arxiv.org/pdf/2410.19106)
 
-**Repositories**
+## Liquidity Pool Incentives
 
-Solving
-
-- <https://github.com/cowprotocol/services> (Cowswap)
-- <https://github.com/Uniswap/uniswapx-artemis> (Uniswap)
-- <https://github.com/propeller-heads/tycho-simulation> (tycho)
-
-Liquidity Management
-
-- Uniswap <https://github.com/Uniswap/arbiters> and <https://github.com/Uniswap/the-compact>
-
-Research
-
-- [Bunni](https://github.com/Bunniapp/v4-rebalancer)
-  - <https://github.com/Bunniapp/analysis>
-  - <https://github.com/Bunniapp/v4-rebalancer> forked from Uniswap <https://github.com/Uniswap/v4-periphery>
-
-Intents
-
-- Uniswap
-
-  <https://github.com/Uniswap/uniswapx-service>
-
-  <https://github.com/Uniswap/the-compact>
-
-  <https://github.com/Uniswap/arbiters>
-
-  <https://github.com/yorhodes>
-
-  <https://github.com/marktoda>
-
-  <https://github.com/Uniswap/sdks>
-
-Chains/Networks
-
-- [Shortcut to the Enso Network](https://x.com/EnsoBuild/status/1917162428908925095)
-
-Impermanent Loss
-
-- <https://github.com/AlfaBlok/v4-gamma-hook> This repository contains research exploring a dynamic fee mechanism for Uniswap V4 hooks, designed to mitigate impermanent loss (IL) for liquidity providers (LPs).
-
-Hooks
-
-- <https://github.com/saucepoint/mev-tax-tip> - Dynamic fees by Sauce
-- <https://github.com/Uniswap/v4-periphery/pull/296>
-
-Unichain Liquidity Pool Incentives
-
-- <https://support.uniswap.org/hc/en-us/articles/35506888223501-What-are-UNI-Rewards>
-- <https://gov.uniswap.org/t/governance-proposal-uniswap-unleashed-unichain-and-uniswap-v4-liquidity-incentives/25250>
-- <https://x.com/agaperste/status/1917392502899757320>
-- <https://dune.com/queries/4998204/8271211>
-
-Liquidity
-
-- [Script to create a pool and provide liquidity](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol)
-
-Cross Chain
-
-- [Scaling Unichain with interop](https://docs.google.com/presentation/d/1N5kSBGrDEdqxHkhW9_YooS-L6AyMEBYbkP1VDIMHeao/edit#slide=id.g2c5f9286902_0_68)
-
-Analytics
-
-- [@uniswap_fnd/Uniswap v4 Launch Metrics Tracker](https://dune.com/uniswap_fnd/v4-launch-metrics-tracker)
-- [@uniswap_fnd/Uniswap v4 Pools Deployed Watcher 🏹](https://dune.com/uniswap_fnd/v4pooldeployedwatcher)
-- [@uniswap_fnd/Uniswap v4 Metrics by Pools and Assets 🦄4️⃣⚖️](https://dune.com/uniswap_fnd/uniswap-v4-metrics-by-pools-and-assets)
-- <https://www.v4.xyz/>
-- <https://hookrank.io/>
-- <https://dune.com/agaperste/v4-hook-explorer?Hook+Addresses_tcbcb9=0xc32c417eCD61bC40d5208755333B334480d5A080>
-- <https://dune.com/uniswap_fnd/v4-launch-metrics-tracker/3bf10ed9-f89b-4737-ae99-cd0c9cd56c4c>
-- <https://dune.com/uniswap_fnd/uniswap-v4-metrics-by-pools-and-assets>
-- [Unichain Sandwich attacks tweet](https://x.com/agaperste/status/1918352104059748735)
+- [Unichain](https://docs.unichain.org/docs)
+  - [What are UNI Rewards?](https://support.uniswap.org/hc/en-us/articles/35506888223501-What-are-UNI-Rewards)
+  - [[Governance Proposal] Uniswap Unleashed: Unichain and Uniswap v4 Liquidity Incentives](https://gov.uniswap.org/t/governance-proposal-uniswap-unleashed-unichain-and-uniswap-v4-liquidity-incentives/25250
+  - [Tweet on Unichain Incentives](https://x.com/agaperste/status/1917392502899757320)
+  - [Analytics - @agaperste Unichain Month 1 LM Stats by Pool](https://dune.com/queries/4998204/8271211)

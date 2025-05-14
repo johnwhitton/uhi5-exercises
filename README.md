@@ -28,6 +28,10 @@ Following are a summary of the Exercises
 It is recommended that you work through each of the exercises and code the solution.
 This repository has completed solutions for each of the exercises which can be used for reference.
 
+## Additional References
+
+Additional references information including articles and repositories around Liquidity Provisioning, Solving, Arbitrage can be found [here](./README.md)
+
 ## Usage
 
 ### Initial Setup
