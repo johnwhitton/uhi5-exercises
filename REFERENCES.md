@@ -51,6 +51,7 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 
 ## Additional Links
 
+- [Atrium Academy Uniswap](https://atrium.academy/uniswap)
 - [Uniswap Hook Incubator](https://learn.atrium.academy/course/4b6c25df-f4c8-4b92-ab38-a930284d237e/intro)
 - [Uniswap v4 Hooks Course](https://learn.atrium.academy/course/9a4ba933-4bee-42fe-871c-6c28b5ca9ffd/intro)
   - [Uniswap v4](https://v4.uniswap.org/)
@@ -68,6 +69,8 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 
 ### References by Course Topic
 
+The following pages in this repository have been copied from the [Atrium Academy Uniswap Hook Incubator](https://learn.atrium.academy/course/4b6c25df-f4c8-4b92-ab38-a930284d237e/intro) course.
+
 1. [FirstHook.md](./exercises/FirstHook.md)
 2. [DynamicFees.md](./exercises/DynamicFees.md)
 3. [LimitOrderHook1.md](./exercises/LimitOrderHook1.md)
@@ -80,6 +83,15 @@ Gathered from [Uniswap Hook Incubator Discord](https://discord.gg/MqMq4eN5)
 10. [SwapAndBridge.md](./exercises/SwapAndBridge.md)
 
 ### Capstone Project Sponsors
+
+The following are sponsors for UHI5 Capstone Project. To see the sort of hooks the sponsors are interested in it is recommended to review the [Request for Hooks page](https://rfh.atrium.academy/Request-For-Hooks-b916793dd7da4682b215c5343f27a828), attend there working sessions and also chat with the teams in Discord.
+
+- [Uniswap Foundation](https://www.uniswapfoundation.org/): [docs](https://www.uniswapfoundation.org/developers)
+- [EigenLayer](https://www.eigenlayer.xyz/): [docs](https://docs.eigenlayer.xyz/)
+- [Ink](https://inkonchain.com/): [docs](https://docs.inkonchain.com/)
+- [Flaunch](https://flaunch.gg/): [docs](https://docs.flaunch.gg/)
+- [Across](https://across.to/): [docs](https://docs.across.to/introduction/what-is-across)
+- [Circle](https://www.circle.com/): [docs](https://developers.circle.com/)
 
 ### Analytics
 
@@ -120,7 +132,7 @@ Following are articles and websites which are relevant for understanding on-chai
   - <https://github.com/Bunniapp/analysis>
   - <https://github.com/Bunniapp/v4-rebalancer> forked from Uniswap <https://github.com/Uniswap/v4-periphery>
 - [SaucePoint](https://github.com/saucepoint)
-  - [MEV Tax Tip](https://github.com/saucepoint/mev-tax-tip): Swap fees porportional to priority fee
+  - [MEV Tax Tip](https://github.com/saucepoint/mev-tax-tip): Swap fees proportional to priority fee
 - [Uniswap Labs](https://github.com/Uniswap)
   - [View only quoter](https://github.com/Uniswap/v4-periphery/pull/296)
   - [Script to create a pool and provide liquidity](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol)
@@ -159,7 +171,12 @@ Following are articles and websites which are relevant for understanding on-chai
 
 ### Arbitrage
 
-- [artemis](https://github.com/Uniswap/uniswapx-artemis) from Uniswap
+- [Uniswap Labs](https://github.com/Uniswap)
+  - [artemis](https://github.com/Uniswap/uniswapx-artemis)
+- [Flashbots](https://github.com/flashbots)
+  - [simple Arbitrage](https://github.com/flashbots/simple-arbitrage)
+- [Robert Miller](https://github.com/bertmiller)
+  - [sMev](https://github.com/bertmiller/sMEV)
 
 ### Liquidity Management
 
@@ -206,6 +223,6 @@ Following are articles and websites which are relevant for understanding on-chai
 
 - [Unichain](https://docs.unichain.org/docs)
   - [What are UNI Rewards?](https://support.uniswap.org/hc/en-us/articles/35506888223501-What-are-UNI-Rewards)
-  - [[Governance Proposal] Uniswap Unleashed: Unichain and Uniswap v4 Liquidity Incentives](https://gov.uniswap.org/t/governance-proposal-uniswap-unleashed-unichain-and-uniswap-v4-liquidity-incentives/25250
+  - [Governance Proposal Uniswap Unleashed: Unichain and Uniswap v4 Liquidity Incentives](https://gov.uniswap.org/t/governance-proposal-uniswap-unleashed-unichain-and-uniswap-v4-liquidity-incentives/25250)
   - [Tweet on Unichain Incentives](https://x.com/agaperste/status/1917392502899757320)
   - [Analytics - @agaperste Unichain Month 1 LM Stats by Pool](https://dune.com/queries/4998204/8271211)
