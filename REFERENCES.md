@@ -11,6 +11,7 @@ The following is a list of reference material which may be useful for those atte
     - [Analytics](#analytics)
   - [Ecosystem](#ecosystem)
   - [Academic Articles](#academic-articles)
+  - [RUST TOOLING](#rust-tooling)
   - [Github Repositories](#github-repositories)
     - [AMM - Capital efficient Pools](#amm---capital-efficient-pools)
     - [Cross Chain Intents](#cross-chain-intents)
@@ -20,8 +21,6 @@ The following is a list of reference material which may be useful for those atte
     - [Liquidity Management](#liquidity-management)
     - [Bridging and Liquidity Rebalancing](#bridging-and-liquidity-rebalancing)
   - [Capital Efficiency for Liquidity Providers](#capital-efficiency-for-liquidity-providers)
-  - [Optimized Liquidity Provisioning](#optimized-liquidity-provisioning)
-  - [Liquidity Indexing](#liquidity-indexing)
   - [Solving and Intent Execution](#solving-and-intent-execution)
   - [Arbitrage](#arbitrage-1)
     - [MEV](#mev)
@@ -111,6 +110,8 @@ Following are articles and websites which are relevant for understanding on-chai
 
 - [The State of Interop (2025)](https://blog.li.fi/the-state-of-interop-2025-4a75d82a9bb9)
 - [Illuminating Ethereum's Order Flow Landscape (2024)](https://writings.flashbots.net/illuminate-the-order-flow)
+- [Intent Collective: a list of working projects in the Intents ecosystem](https://github.com/EnsoFinance/IntentCollective)
+- [Scaling Ethereum L1 and L2s in 2025 and beyond](https://vitalik.eth.limo/general/2025/01/23/l1l2future.html)
 
 ## Academic Articles
 
@@ -123,6 +124,11 @@ Following are articles and websites which are relevant for understanding on-chai
   - [The State of Interop (2025)](https://blog.li.fi/the-state-of-interop-2025-4a75d82a9bb9)
 - [Uniswap v3 Book](https://uniswapv3book.com/milestone_0/uniswap-v3.html)
 - [The Economics of Automated Market Makers](https://arxiv.org/pdf/2206.04634)
+
+## RUST TOOLING
+
+- [Foundry](https://book.getfoundry.sh/getting-started/first-steps)
+- [Alloy](https://alloy.rs/)
 
 ## Github Repositories
 
@@ -202,10 +208,6 @@ Following are articles and websites which are relevant for understanding on-chai
 - [Calculating PnL of an LP position (tweet)](https://x.com/0x94305/status/1817333048427593849)
 - [YieldSpace: An Automated Liquidity Provider for Fixed Yield Tokens](https://yield.is/YieldSpace.pdf)
 - [The Yield Protocol: On-Chain Lending With Interest Rate Discovery](https://cdn.sanity.io/files/dgybcd83/production/987f27b391bdf8e86181d7186a7fb7d315fbf2c1.pdf)
-
-## Optimized Liquidity Provisioning
-
-## Liquidity Indexing
 
 ## Solving and Intent Execution
 

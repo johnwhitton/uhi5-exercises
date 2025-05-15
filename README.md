@@ -32,11 +32,11 @@ This repository has completed solutions for each of the exercises which can be u
 
 ## Further Reading and Resources
 
-Additional references information including useful Uniswap Hook Incubator links, articles and repositories around Liquidity Provisioning, Solving, Arbitrage can be found [here](./README.md)
+Additional references information including useful Uniswap Hook Incubator links, articles and repositories around Liquidity Provisioning, Solving, Arbitrage can be found [here](./REFERENCES.md)
 
 ## Known Issues
 
-1. Currently CICD workflow fails due to environment variables needing to be set up for the CICD pipeline.
+1. Currently, CICD workflow fails due to environment variables needing to be set up for the CICD pipeline.
 
 ```
 Failing tests:
