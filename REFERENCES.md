@@ -148,7 +148,7 @@ Following are articles and websites which are relevant for understanding on-chai
     - [uniswapx-sdk](https://github.com/Uniswap/sdks/tree/main/sdks/uniswapx-sdk)
   - [View only quoter](https://github.com/Uniswap/v4-periphery/pull/296): Rejected and not merged
 - [Uniswap Foundation](https://github.com/uniswapfoundation)
-  - [v4-template](https://github.com/uniswapfoundation/v4-template)
+  - [v4-template](https://github.com/uniswapfoundation/v4-template): [deepwiki](https://deepwiki.com/uniswapfoundation/v4-template)
     - [01_CreatePoolAndMintLiquidity.s.sol](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol): Script to create a pool and provide liquidity
 
 ### Cross Chain Intents
