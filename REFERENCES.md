@@ -140,8 +140,16 @@ Following are articles and websites which are relevant for understanding on-chai
 - [SaucePoint](https://github.com/saucepoint)
   - [MEV Tax Tip](https://github.com/saucepoint/mev-tax-tip): Swap fees proportional to priority fee
 - [Uniswap Labs](https://github.com/Uniswap)
-  - [View only quoter](https://github.com/Uniswap/v4-periphery/pull/296)
-  - [Script to create a pool and provide liquidity](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol)
+  - [v4-core](https://github.com/Uniswap/v4-core): [deepwiki](https://deepwiki.com/Uniswap/v4-core)
+  - [v4-periphery](https://github.com/Uniswap/v4-periphery): [deepwiki](https://deepwiki.com/Uniswap/v4-periphery)
+    - [V4Quoter.sol](https://github.com/Uniswap/v4-periphery/blob/main/src/lens/V4Quoter.sol): [docs](https://docs.uniswap.org/contracts/v4/reference/periphery/lens/V4Quoter)
+  - [sdks](https://github.com/Uniswap/sdks); [deepwiki](https://deepwiki.com/Uniswap/sdks)
+    - [v4-sdk](https://github.com/Uniswap/sdks/tree/main/sdks/v4-sdk)
+    - [uniswapx-sdk](https://github.com/Uniswap/sdks/tree/main/sdks/uniswapx-sdk)
+  - [View only quoter](https://github.com/Uniswap/v4-periphery/pull/296): Rejected and not merged
+- [Uniswap Foundation](https://github.com/uniswapfoundation)
+  - [v4-template](https://github.com/uniswapfoundation/v4-template)
+    - [01_CreatePoolAndMintLiquidity.s.sol](https://github.com/uniswapfoundation/v4-template/blob/main/script/01_CreatePoolAndMintLiquidity.s.sol): Script to create a pool and provide liquidity
 
 ### Cross Chain Intents
 
