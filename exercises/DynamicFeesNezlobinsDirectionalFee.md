@@ -55,13 +55,20 @@ With Uniswap v3 and concentrated liquidity, markets became more capital efficien
 
 But, how big a problem is this really?
 
-To answer that we will take a look at [this paper](https://sites.google.com/site/alexanderanezlobin/alexander-nezlobin). The paper analyzed 17 pools which covered 43% of the TVL on Ethereum L1 over a certain time period. Total fees earned during that time period until the cut off date was ~$200 million, but total impermanent loss was ~$260 million. Had LPs just held their tokens, theoretically, they would have ~$60 million more.
+To answer that we will take a look at [Impermanent Loss in Uniswap V3](https://arxiv.org/abs/2111.09192) from [Alexander Nezlobin](https://sites.google.com/site/alexanderanezlobin/alexander-nezlobin). The paper analyzed 17 pools which covered 43% of the TVL on Ethereum L1 over a certain time period. Total fees earned during that time period until the cut off date was ~$200 million, but total impermanent loss was ~$260 million. Had LPs just held their tokens, theoretically, they would have ~$60 million more.
 
 This doesn't paint the full picture though as there are a couple of important sidenotes here.
 
 1. LPs "losing" money on average is not the same as all LPs losing money
 2. Several LPs out there also make money
 3. LPs inherently take upon risk by choosing to become a market maker. It's a similar opportunity cost as you choosing to sell your ETH when you think the price has hit a local top, and after you sell it, it turns out the price kept going up anyway. You "lost out" on more money, but didn't "actually" lose money.
+
+Other relevant papers
+
+- [Differential Liquidity Provision in Uniswap v3 and Implications for Contract Design](https://arxiv.org/pdf/2204.00464)
+- [Strategic Liquidity Provision in Uniswap v3](https://arxiv.org/pdf/2106.12033)
+- [Risks and Returns of Uniswap V3 Liquidity Providers](https://arxiv.org/pdf/2205.08904)
+- [DODO Whitepaper](https://resources.cryptocompare.com/asset-management/436/1693387317437.pdf)
 
 ## Toxic Order Flow
 
