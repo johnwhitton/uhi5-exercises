@@ -25,6 +25,7 @@ The following is a list of reference material which may be useful for those atte
   - [Arbitrage](#arbitrage-1)
     - [MEV](#mev)
   - [Liquidity Pool Incentives](#liquidity-pool-incentives)
+  - [Reference Code Bases](#reference-code-bases)
 
 ## Atrium Academy
 
@@ -236,3 +237,20 @@ Following are articles and websites which are relevant for understanding on-chai
   - [Governance Proposal Uniswap Unleashed: Unichain and Uniswap v4 Liquidity Incentives](https://gov.uniswap.org/t/governance-proposal-uniswap-unleashed-unichain-and-uniswap-v4-liquidity-incentives/25250)
   - [Tweet on Unichain Incentives](https://x.com/agaperste/status/1917392502899757320)
   - [Analytics - @agaperste Unichain Month 1 LM Stats by Pool](https://dune.com/queries/4998204/8271211)
+
+## Reference Code Bases
+
+- https://deepwiki.com/Bunniapp/bunni-v2
+- https://deepwiki.com/Bunniapp/flood-contracts
+- https://deepwiki.com/euler-xyz/euler-swap
+- https://deepwiki.com/euler-xyz/euler-price-oracle
+- https://deepwiki.com/euler-xyz/reward-streams
+- https://deepwiki.com/euler-xyz/euler-vault-kit
+- https://deepwiki.com/euler-xyz/liquidation-bot-v2
+- https://deepwiki.com/Renzo-Protocol/foundational-hooks
+- https://deepwiki.com/Renzo-Protocol/contracts-public
+- https://deepwiki.com/Layr-Labs/eigenlayer-contracts
+- https://deepwiki.com/Layr-Labs/devkit-cli
+- https://deepwiki.com/OpenZeppelin/uniswap-hooks
+- https://deepwiki.com/uniswapfoundation/v4-template
+- https://deepwiki.com/uhicapstone/capstone_solidity_contracts
